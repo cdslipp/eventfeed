@@ -1,0 +1,28 @@
+meta {
+  name: Get Events - PUBLISHED
+  type: http
+  seq: 4
+}
+
+get {
+  url: https://cms.connectedkw.com/items/events
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "query": {
+      "filter": {
+        "status": {
+          "_eq": "published"
+        }
+      }
+    }
+  }
+  
+}
+
+script:pre-request {
+  req.setMethod("SEARCH")
+}

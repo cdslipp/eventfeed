@@ -4,7 +4,9 @@
 	let { data } = $props();
 </script>
 
-<h1>Upcoming Events</h1>
+<nav>
+	<h1>Upcoming Events</h1>
+</nav>
 
 {#if data.events && data.events.length > 0}
 	{#each data.events as event (event.id)}
@@ -13,3 +15,10 @@
 {:else}
 	<p>No events found.</p>
 {/if}
+
+<style>
+	nav {
+		padding-top: 3rem;
+		padding-bottom: 1rem;
+	}
+</style>

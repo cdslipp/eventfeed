@@ -1,0 +1,16 @@
+meta {
+  name: Get Tag - Single
+  type: http
+  seq: 5
+}
+
+get {
+  url: https://cms.connectedkw.com/items/tags
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: process.env.DIRECTUS_EMAIL
+  password: process.env.DIRECTUS_PASSWORD
+}
