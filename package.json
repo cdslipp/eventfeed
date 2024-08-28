@@ -35,6 +35,7 @@
 	"type": "module",
 	"dependencies": {
 		"@directus/sdk": "^17.0.0",
+		"@picocss/pico": "^2.0.6",
 		"marked": "^14.1.0"
 	}
 }

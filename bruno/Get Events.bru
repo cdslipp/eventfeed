@@ -1,0 +1,16 @@
+meta {
+  name: Get Events
+  type: http
+  seq: 2
+}
+
+get {
+  url: https://cms.connectedkw.com/items/events
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: process.env.DIRECTUS_PASSWORD
+  password: process.env.DIRECTUS_PASSWORD
+}

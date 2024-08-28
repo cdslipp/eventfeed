@@ -46,7 +46,7 @@
 	}
 </script>
 
-<div class="event-card">
+<article class="event-card">
 	<h2>{event.title}</h2>
 	<p class="event-date">{displayDate}</p>
 	{#if showFullDescription}
@@ -61,9 +61,9 @@
 		<button on:click={toggleDescription} class="read-less">Show less</button>
 	{/if}
 	{#if event.external_link}
-		<a href={event.external_link} target="_blank" rel="noopener noreferrer">More Info</a>
+		<a class="button" href={event.external_link} target="_blank">More Info</a>
 	{/if}
-</div>
+</article>
 
 <style>
 	.event-card {
