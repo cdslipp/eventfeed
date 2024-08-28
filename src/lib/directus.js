@@ -34,15 +34,18 @@ export async function getEvents() {
 	try {
 		const response = await directus.request(
 			readItems('events', {
-				fields: ['title', 'description', 'starts_at', 'ends_at', 'external_link']
+				fields: ['id', 'title', 'description', 'starts_at', 'ends_at', 'external_link']
 			})
 		);
 
 		// Ensure the response is an array
 		const rawEvents = Array.isArray(response) ? response : [];
 
+		// console.log(rawEvents);
+
 		// Map the raw events to the expected Event structure
 		const events = rawEvents.map((event) => ({
+			id: event.id || '',
 			title: event.title || '',
 			description: event.description || '',
 			starts_at: event.starts_at || '',
@@ -50,7 +53,7 @@ export async function getEvents() {
 			external_link: event.external_link || ''
 		}));
 
-		console.log('Fetched events:', events);
+		// console.log('Fetched events:', events);
 		return events;
 	} catch (error) {
 		console.error('Error fetching events:', error);
