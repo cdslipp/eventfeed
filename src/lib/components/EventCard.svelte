@@ -9,7 +9,7 @@
 		ends_at: string,
 		external_link: string,
 		image_url: string,
-		tags: Array<{ id: number, name: string, slug: string }>
+		tags: Array<{ id: number, name: string }>
 	}} */
 	let { event } = $props();
 
@@ -58,6 +58,8 @@
 	function closeModal() {
 		modalOpen = false;
 	}
+
+	console.log(event);
 </script>
 
 {#snippet eventModal()}

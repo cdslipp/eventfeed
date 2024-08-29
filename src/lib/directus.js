@@ -1,3 +1,5 @@
+//Most of the DB requests here are taken straight from Shay's ConnectedKW frontend's directus.js file.
+
 import { createDirectus, rest, authentication, readItems, readItem } from '@directus/sdk';
 import { DIRECTUS_URL } from '$env/static/private';
 
@@ -61,25 +63,71 @@ export async function getEvents() {
 	try {
 		const response = await directus.request(
 			readItems('events', {
-				fields: ['*'],
+				fields: '*,location.*,categories.categories_id.*,tags.tags_id.*,image.*',
 				filter: {
 					status: {
 						_eq: 'published'
-					}
-				}
+					},
+					classification: {
+						_eq: 'event'
+					},
+					_or: [
+						{
+							_and: [
+								{
+									starts_at: {
+										_lte: new Date().toISOString()
+									}
+								},
+								{
+									ends_at: {
+										_gte: new Date().toISOString()
+									}
+								}
+							]
+						},
+						{
+							_and: [
+								{
+									starts_at: {
+										_gte: new Date().toISOString()
+									}
+								},
+								{
+									ends_at: {
+										_null: true
+									}
+								}
+							]
+						},
+						{
+							_and: [
+								{
+									starts_at: {
+										_gte: new Date().toISOString()
+									}
+								},
+								{
+									ends_at: {
+										_gte: new Date().toISOString()
+									}
+								}
+							]
+						}
+					]
+				},
+				sort: ['starts_at']
 			})
 		);
 
-		// Ensure the response is an array
 		const events = Array.isArray(response) ? response : [];
-		// console.log('Fetched events:', events);
-		return events;
+		return events.map((event) => ({
+			...event,
+			categories: event.categories.map((cat) => ({ ...cat.categories_id })),
+			tags: event.tags.map((tag) => ({ ...tag.tags_id }))
+		}));
 	} catch (error) {
 		console.error('Error fetching events:', error);
-		if (error.response) {
-			console.error('Response status:', error.response.status);
-			console.error('Response data:', await error.response.text());
-		}
 		throw new Error('Failed to fetch events from Directus');
 	}
 }
@@ -92,8 +140,18 @@ export async function getEvents() {
 export async function getTag(id) {
 	try {
 		const tag = await directus.request(
-			readItem('tags', id, {
-				fields: ['*']
+			readItems('categories', {
+				fields: 'id,name,description,slug',
+				filter: {
+					status: {
+						_eq: 'published'
+					},
+					events: {
+						events_id: {
+							_in: eventIds
+						}
+					}
+				}
 			})
 		);
 
